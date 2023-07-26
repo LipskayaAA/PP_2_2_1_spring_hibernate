@@ -26,4 +26,19 @@ public class UserDaoImp implements UserDao {
       return query.getResultList();
    }
 
+   @Override
+   @SuppressWarnings("unchecked")
+   public User getUserByCar(String model, int series) {
+      TypedQuery<User> query = sessionFactory.getCurrentSession().createQuery(
+                      "select i from User i where i.car.model = :model and i.car.series = :series")
+              .setParameter("model", model)
+              .setParameter("series", series);
+      try {
+         return query.getResultList().get(0);
+      } catch (IndexOutOfBoundsException e) {
+         return null;
+      }
+   }
+
+
 }
